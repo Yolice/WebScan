@@ -6,9 +6,10 @@ import re
 
 
 def find_ipproxy():
-    ip_proxy_url=['http://cn-proxy.com','http://www.xicidaili.com/','http://www.coobobo.com']
+    ip_proxy_url=['http://cn-proxy.com','https://www.kuaidaili.com/free/intr']
+    '''在写用代理的程序时候要注意try检测代理函数是否可用'''
     ip_Gene=[]
-    web_data=requests.get(ip_proxy_url[0],headers=HEADER)
+    web_data=requests.get(ip_proxy_url[random.randint(0,1)],headers=HEADER)
     web_data.encoding='utf-8'
     soups=BeautifulSoup(web_data.text,'lxml')
     port_list=soups.find_all(string=re.compile("^[80-65535]{1,4}$"))
@@ -20,6 +21,7 @@ def find_ipproxy():
         proxies_test={
             "http":"http://{}".format(proxy_address)
         }
+        target_url="http://www.google.co.jp"
         try:
             requests.get(url=target_url,headers=HEADER,proxies=proxies_test,timeout=3)
         except:
@@ -28,7 +30,4 @@ def find_ipproxy():
         "http":"http://{}".format(random.choice(ip_Gene))
     }
     return proxies
-
-
-
 
